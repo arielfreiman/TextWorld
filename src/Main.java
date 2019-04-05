@@ -20,7 +20,7 @@ public class Main {
         player.setCurrentRoom(g.getroom("hall"));
         String response = "";
         Scanner input = new Scanner(System.in);
-
+        initializeChicken(10 , g);
 
 
         do {
@@ -67,10 +67,18 @@ public class Main {
                 else
                     System.out.println("you don't have this item");
             }
+            if(response.equals("chicken")){
+                player.currentRoom.displayChickensInRoom();
+            }
 
 
         } while (!response.equals("quit"));
     }
 
+    private static void initializeChicken(int number,Level g) {
+        for (int i = 0; i < number; i++) {
+           Chicken chick = new Chicken("Chicken"+i,g);
+        }
+    }
 
 }

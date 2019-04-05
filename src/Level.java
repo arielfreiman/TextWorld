@@ -54,6 +54,7 @@ public class Level {
         private HashMap <String,Room> neighbors;
         private String description;
         private ArrayList<Item> items;
+        private ArrayList<Chicken> chickens;
 
         public HashMap<String, Room> getNeighborsByHashMap() {
             return neighbors;
@@ -155,6 +156,35 @@ public class Level {
             }
             int rand = (int) (Math.random()*(rooms.size()));
             return  (new Level.Room(rooms.get(rand)));
+        }
+
+
+
+
+        public ArrayList<Chicken> getChickens(){
+            return chickens;
+        }
+        public void displayChickensInRoom(){
+            System.out.println("Chickens in this room: "+ chickens.size());
+        }
+        public void addChicken(String name){chickens.add(new Chicken(name));}
+        public void addChicken(Chicken chicken){chickens.add(chicken);}
+        public Chicken removeChicken(String name){
+            for (int i = 0; i < chickens.size(); i++) {
+                if (chickens.get(i).getName().equals(name)){
+                    return chickens.remove(i);
+                }
+            }
+            return null;
+        }
+
+        public boolean destroyChicken(String name){
+            for (int i = 0; i < chickens.size(); i++) {
+                if (chickens.get(i).getName().equals(name)){
+                    return chickens.remove(chickens.get(i));
+                }
+            }
+            return false;
         }
     }
 }

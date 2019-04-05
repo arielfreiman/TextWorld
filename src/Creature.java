@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Creature {
-
+    protected String name;
     protected Level level;
     protected Level.Room currentRoom;
 

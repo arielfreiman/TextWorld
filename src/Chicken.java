@@ -1,11 +1,12 @@
 public class Chicken extends Creature{
     public Chicken (String n, Level lev){
         this.level = lev;
-
         currentRoom=level.getRandomRoom();
-        name=n;
-        currentRoom.addChicken(n);
+        this.name=n;
     }
+
+
+
     public void move(){
         currentRoom.getRandomNeighbor();
     }

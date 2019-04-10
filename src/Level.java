@@ -4,6 +4,7 @@ import java.util.HashMap;
 public class Level {
 
     private HashMap<String, Room> rooms;
+    private ArrayList<Creature> allCreatures;
 
     public Level() {
         rooms = new HashMap<>();
@@ -63,8 +64,6 @@ public class Level {
         private HashMap<String, Room> neighbors;
         private String description;
         private ArrayList<Item> items;
-        private ArrayList<Chicken> chickens;
-
 
         public HashMap<String, Room> getNeighborsByHashMap() {
             return neighbors;
@@ -82,7 +81,6 @@ public class Level {
             this.name = name;
             this.description = description;
             ArrayList<Item> items = new ArrayList<>();
-            this.chickens = new ArrayList<>();
         }
 
         private Room(String name, String description, Item item) {
@@ -91,7 +89,6 @@ public class Level {
             this.description = description;
             this.items = new ArrayList<>();
             items.add(item);
-            this.chickens = new ArrayList<>();
         }
 
         public Room(Room room) {
@@ -99,7 +96,6 @@ public class Level {
             this.name = room.name;
             this.description = room.getDescription();
             this.items = room.getItems();
-            this.chickens = new ArrayList<>();
         }
 
         public String getName() {
@@ -187,10 +183,6 @@ public class Level {
             }
             int rand = (int) (Math.random() * (rooms.size()));
             return (new Level.Room(rooms.get(rand)));
-        }
-
-        public ArrayList<Chicken> getChickens() {
-            return chickens;
         }
 
         public void displayChickensInRoom() {

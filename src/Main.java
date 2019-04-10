@@ -20,7 +20,8 @@ public class Main {
         player.setCurrentRoom(g.getroom("hall"));
         String response = "";
         Scanner input = new Scanner(System.in);
-        initializeChicken(100 ,g);
+        ArrayList<Chicken> allChickens = initializeChicken(100 ,g);
+
 
 
         do {
@@ -70,15 +71,31 @@ public class Main {
             if(response.contains("chicken")){
                 player.currentRoom.displayChickensInRoom();
             }
-
+            creatureAct(allChickens);
 
         } while (!response.equals("quit"));
     }
 
-    private static void initializeChicken(int number, Level g) {
+    private static void creatureAct(ArrayList<Chicken> allChickens) {
+        chickenAct(allChickens);
+    }
+
+    private static void chickenAct(ArrayList<Chicken> allChickens) {
+        for (int i = 0; i < allChickens.size(); i++) {
+            allChickens.get(i).getCurrentRoom().removeChicken(allChickens.get(i).getName());
+            allChickens.get(i).act();
+            allChickens.get(i).getCurrentRoom().addChicken(allChickens.get(i));
+        }
+    }
+
+    private static ArrayList<Chicken> initializeChicken(int number, Level g) {
+        ArrayList<Chicken> chicks = new ArrayList<>();
         for (int i = 0; i < number; i++) {
            Chicken chick = new Chicken("Chicken"+i,g);
+           chick.getCurrentRoom().addChicken(chick);
+           chicks.add(chick);
         }
+        return chicks;
     }
 
 }

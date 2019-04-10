@@ -3,9 +3,14 @@ import java.util.HashMap;
 
 public abstract class Creature {
     protected String name;
-    protected Level level;
+
     protected Level.Room currentRoom;
 
+    public Creature(String name, Level.Room currentRoom) {
+        this.name=name;
+        this.currentRoom=currentRoom;
+
+    }
 
 
     public abstract void move();

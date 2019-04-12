@@ -8,11 +8,26 @@ public class Level {
 
     public Level() {
         rooms = new HashMap<>();
+        allCreatures = new ArrayList<>();
     }
 
     public void addRoom(String name, String description, ArrayList<Item> items) {
         Room n = new Room(name, description, items);
         rooms.put(name, n);
+    }
+    public ArrayList<Creature> getAllCreatures(){
+        return allCreatures;
+    }
+    public int findChickenInARoom(Room room){
+        int counter=0;
+        for (int i = 0; i < allCreatures.size(); i++) {
+            if (allCreatures.get(i).getName().contains("Chicken")){
+                if (allCreatures.get(i).getCurrentRoom().getName().equals(room.getName())){
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
     public void addRoom(String name, String description, Item item) {
@@ -52,10 +67,45 @@ public class Level {
     }
 
 
-    public void createChickenInRoom(String roomName, String chickenName) {
-        Room room = getroom(roomName);
-        room.getChickens().add(new Chicken(chickenName, this));
+    public void createChickens(String chickenName) {
+        Chicken chicken = new Chicken(chickenName);
+        chicken.setCurrentRoom(getRandomRoom());
+        allCreatures.add(chicken);
+    }
+    public void createPopStars(String popName,Player player){
+        PopStar popStar = new PopStar(popName,player);
+        popStar.setCurrentRoom(getRandomRoom());
+        allCreatures.add(popStar);
+    }
 
+    public int findPopStarsInARoom(Room currentRoom) {
+        int counter=0;
+        for (int i = 0; i < allCreatures.size(); i++) {
+            if (allCreatures.get(i).getName().contains("PopStar")){
+                if (allCreatures.get(i).getCurrentRoom().getName().equals(currentRoom.getName())){
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
+    public int findWumpusInARoom(Room currentRoom) {
+        int counter=0;
+        for (int i = 0; i < allCreatures.size(); i++) {
+            if (allCreatures.get(i).getName().contains("Wumpus")){
+                if (allCreatures.get(i).getCurrentRoom().getName().equals(currentRoom.getName())){
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
+    public void createWumpuses(String wumpName, Player player) {
+        Wumpus wumpus = new Wumpus(wumpName,player);
+        wumpus.setCurrentRoom(getRandomRoom());
+        allCreatures.add(wumpus);
     }
 
     public static class Room {
@@ -134,8 +184,10 @@ public class Level {
 
         public void displayInventory() {
             System.out.println("Items in this room: ");
-            for (int i = 0; i < items.size(); i++) {
-                System.out.println(items.get(i).getName() + "> " + items.get(i).getDescription());
+            if (items!=null) {
+                for (int i = 0; i < items.size(); i++) {
+                    System.out.println(items.get(i).getName() + "> " + items.get(i).getDescription());
+                }
             }
         }
 
@@ -184,35 +236,38 @@ public class Level {
             int rand = (int) (Math.random() * (rooms.size()));
             return (new Level.Room(rooms.get(rand)));
         }
-
-        public void displayChickensInRoom() {
-            if (chickens!= null) {
-                System.out.println("Chickens in this room: " + chickens.size());
+        public boolean isNeigbor(Room room){
+            for (Room n : neighbors.values()) {
+                if (room == n){
+                    return true;
+                }
             }
-            else
-                System.out.println("No Chickens");
+            return false;
         }
-
-        public void addChicken(Chicken chicken) {
-            chickens.add(chicken);
-        }
-
-        public Chicken removeChicken(String name) {
-            for (int i = 0; i < chickens.size(); i++) {
-                if (chickens.get(i).getName().equals(name)) {
-                    return chickens.remove(i);
+        public Room hasTheSameNeighbor( Room room ){
+            for (Room n1 : neighbors.values()) {
+                for (Room n2 : room.getNeighborsByHashMap().values()) {
+                    if (n1 == n2){
+                        return n1;
+                    }
                 }
             }
             return null;
         }
-
-        public boolean destroyChicken(String name) {
-            for (int i = 0; i < chickens.size(); i++) {
-                if (chickens.get(i).getName().equals(name)) {
-                    return chickens.remove(chickens.get(i));
-                }
+        public Room randomRoomWithOutThisRoom(Room room){
+            if(neighbors.size()==1 && this.isNeigbor(room)){
+                return this; //NO Neighbor To Run (Trapped)
             }
-            return false;
+            if(this==room){
+                return room.getRandomNeighbor();
+            }
+            else{
+                Room out=null;
+                while (out!=room){
+                    out=this.getRandomNeighbor();
+                }
+                return out;
+            }
         }
     }
 }

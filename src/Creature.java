@@ -6,16 +6,15 @@ public abstract class Creature {
 
     protected Level.Room currentRoom;
 
-    public Creature(String name, Level.Room currentRoom) {
+    public Creature(String name) {
         this.name=name;
-        this.currentRoom=currentRoom;
-
     }
 
 
     public abstract void move();
     public abstract void act();
     public Level.Room getCurrentRoom(){return currentRoom;}
+    public String getName(){return name;}
     public void setCurrentRoom(Level.Room room){
         currentRoom=room ;
     }

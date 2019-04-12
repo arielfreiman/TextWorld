@@ -20,7 +20,13 @@ public class Main {
         player.setCurrentRoom(g.getroom("hall"));
         String response = "";
         Scanner input = new Scanner(System.in);
-        ArrayList<Chicken> allChickens = initializeChicken(100 ,g);
+
+        for (int i = 0; i < 10; i++) {
+            g.createChickens("Chicken"+i);
+            g.createPopStars("PopStar"+i,player);
+            g.createWumpuses("Wumpus"+i,player);
+        }
+
 
 
 
@@ -29,7 +35,7 @@ public class Main {
             System.out.println(player.getName()+". You are currently at the " + player.getCurrentRoom().getName()+": "+player.getCurrentRoom().getDescription());
             player.getCurrentRoom().displayInventory();
             System.out.println("What do you want to do? > go to <roomname> , look , add room <roomname> , " +
-                    "take <itemname> , drop <itemname> , look for chicken , quit");
+                    "take <itemname> , drop <itemname> , look for chicken , look for popstars , look for wumpus , quit");
             response = input.nextLine();
             if (response.length() >= 5 && response.substring(0, 5).equals("go to")) {
                 if (player.getCurrentRoom().getNeighbor(response.substring(6)) != null) {
@@ -68,34 +74,26 @@ public class Main {
                 else
                     System.out.println("you don't have this item");
             }
-            if(response.contains("chicken")){
-                player.currentRoom.displayChickensInRoom();
+            if(response.contains("look for chicken")){
+              int numberOfChickenInRoom = g.findChickenInARoom(player.getCurrentRoom());
+              System.out.println("There are "+numberOfChickenInRoom+" chickens in this room");
             }
-            creatureAct(allChickens);
+            if(response.contains("look for popstars")){
+                int numberOfPopStarsInRoom = g.findPopStarsInARoom(player.getCurrentRoom());
+                System.out.println("There are "+numberOfPopStarsInRoom+" popstars in this room");
+            }
+            if(response.contains("look for wumpus")){
+                int numberOfWumpusInRoom = g.findWumpusInARoom(player.getCurrentRoom());
+                System.out.println("There are "+numberOfWumpusInRoom+" wumpus in this room");
+            }
+            creatureAct(g.getAllCreatures());
 
         } while (!response.equals("quit"));
     }
 
-    private static void creatureAct(ArrayList<Chicken> allChickens) {
-        chickenAct(allChickens);
-    }
-
-    private static void chickenAct(ArrayList<Chicken> allChickens) {
-        for (int i = 0; i < allChickens.size(); i++) {
-            allChickens.get(i).getCurrentRoom().removeChicken(allChickens.get(i).getName());
-            allChickens.get(i).act();
-            allChickens.get(i).getCurrentRoom().addChicken(allChickens.get(i));
+    private static void creatureAct(ArrayList<Creature> allCreatures) {
+        for (int i = 0; i < allCreatures.size(); i++) {
+            allCreatures.get(i).act();
         }
     }
-
-    private static ArrayList<Chicken> initializeChicken(int number, Level g) {
-        ArrayList<Chicken> chicks = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-           Chicken chick = new Chicken("Chicken"+i,g);
-           chick.getCurrentRoom().addChicken(chick);
-           chicks.add(chick);
-        }
-        return chicks;
-    }
-
 }

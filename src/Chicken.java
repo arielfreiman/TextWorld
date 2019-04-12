@@ -5,7 +5,7 @@ public class Chicken extends Creature {
 
 
     public void move() {
-        currentRoom.getRandomNeighbor();
+        setCurrentRoom(currentRoom.getRandomNeighbor());
     }
 
     public void act() {

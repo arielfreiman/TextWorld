@@ -255,11 +255,11 @@ public class Level {
             return null;
         }
         public Room randomRoomWithOutThisRoom(Room room){
+            if(this.getName().equals(room.getName())){
+                return room.getRandomNeighbor();
+            }
             if(neighbors.size()==1 && this.isNeigbor(room)){
                 return this; //NO Neighbor To Run (Trapped)
-            }
-            if(this==room){
-                return room.getRandomNeighbor();
             }
             else{
                 Room out=null;

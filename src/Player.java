@@ -58,8 +58,8 @@ public class Player {
         return currentRoom;
     }
 
-    public void setCurrentRoom(Level.Room currentRoom) {
-        this.currentRoom = currentRoom;
+    public void setCurrentRoom(Level.Room next) {
+        this.currentRoom = next;
     }
 
 
